@@ -20,11 +20,19 @@ public class Game {
         checkers = game.setCheckersOnCells(cells);
         board.setReady(true);
 
-        actualCheckers = game.move(cells, checkers, 6, 2, 4, 4);
-        System.out.println(actualCheckers[4][4].getId());
-
-        actualCheckers = game.move(cells, actualCheckers, 3, 5, 5, 3);
+        actualCheckers = game.move(cells, checkers, 6, 2, 5, 3);
         System.out.println(actualCheckers[5][3].getId());
+
+        actualCheckers = game.move(cells, actualCheckers, 4, 2, 6, 4);
+        System.out.println(actualCheckers[4][2].getId());
+
+        for (int i = 0; i < 8; i++) {
+            for (int n = 0; n < 8; n++) {
+                if(actualCheckers[i][n]!=null){
+                    System.out.println(actualCheckers[i][n]);
+                }
+            }
+        }
 
         menu.quitMenu();
 
@@ -88,6 +96,7 @@ public class Game {
         Checker[][] actualCheckers = new Checker[8][8];
 
         Checker[][] temporaryCheckers = new Checker[8][8];
+        int friendlyCheckerCounter = 0;
         int enemyCheckerCounter = 0;
         int enemyXPosition = 0;
         int enemyYPosition = 0;
@@ -101,6 +110,7 @@ public class Game {
                             if(checkers[i][n] != null){
                                 if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == true){
                                     System.out.println("Cannot move over your checker.");
+                                    friendlyCheckerCounter++;
                                 } else if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == false){
                                     enemyCheckerCounter++;
                                     enemyXPosition = i;
@@ -111,7 +121,11 @@ public class Game {
                     }
                 }
                 if(enemyCheckerCounter == 0){
-                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    if(friendlyCheckerCounter == 1) {
+                        actualCheckers = checkers;
+                    } else {
+                        actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    }
                 } else if (enemyCheckerCounter == 1){
                     temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
@@ -124,6 +138,7 @@ public class Game {
                             if(checkers[i][n] != null){
                                 if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == true){
                                     System.out.println("Cannot move over your checker.");
+                                    friendlyCheckerCounter++;
                                 } else if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == false){
                                     enemyCheckerCounter++;
                                     enemyXPosition = i;
@@ -134,7 +149,11 @@ public class Game {
                     }
                 }
                 if(enemyCheckerCounter == 0){
-                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    if(friendlyCheckerCounter == 1) {
+                        actualCheckers = checkers;
+                    } else {
+                        actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    }
                 } else if (enemyCheckerCounter == 1){
                     temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
@@ -147,6 +166,7 @@ public class Game {
                             if(checkers[i][n] != null){
                                 if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == true){
                                     System.out.println("Cannot move over your checker.");
+                                    friendlyCheckerCounter++;
                                 } else if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == false){
                                     enemyCheckerCounter++;
                                     enemyXPosition = i;
@@ -157,7 +177,11 @@ public class Game {
                     }
                 }
                 if(enemyCheckerCounter == 0){
-                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    if(friendlyCheckerCounter == 1) {
+                        actualCheckers = checkers;
+                    } else {
+                        actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    }
                 } else if (enemyCheckerCounter == 1){
                     checkers[enemyXPosition][yCoordinate].setEliminated(true);
                     temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
@@ -171,6 +195,7 @@ public class Game {
                             if(checkers[i][n] != null){
                                 if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == true){
                                     System.out.println("Cannot move over your checker.");
+                                    friendlyCheckerCounter++;
                                 } else if(checkers[i][n].getColor().equals(checkers[xCoordinate][yCoordinate].getColor()) == false){
                                     enemyCheckerCounter++;
                                     enemyXPosition = i;
@@ -181,7 +206,11 @@ public class Game {
                     }
                 }
                 if(enemyCheckerCounter == 0){
-                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    if(friendlyCheckerCounter == 1) {
+                        actualCheckers = checkers;
+                    } else {
+                        actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
+                    }
                 } else if (enemyCheckerCounter == 1){
                     temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
