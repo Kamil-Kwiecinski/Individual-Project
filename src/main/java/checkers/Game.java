@@ -23,23 +23,8 @@ public class Game {
         actualCheckers = game.move(cells, checkers, 6, 2, 4, 4);
         System.out.println(actualCheckers[4][4].getId());
 
-        for (int i = 0; i < 8; i++) {
-            for (int n = 0; n < 8; n++) {
-                if (actualCheckers[i][n]!=null)
-                    System.out.println(actualCheckers[i][n]);
-            }
-        }
-        System.out.println();
-
         actualCheckers = game.move(cells, actualCheckers, 3, 5, 5, 3);
-//        System.out.println(actualCheckers[5][3].getId());
-
-        for (int i = 0; i < 8; i++) {
-            for (int n = 0; n < 8; n++) {
-                if (actualCheckers[i][n]!=null)
-                    System.out.println(actualCheckers[i][n]);
-            }
-        }
+        System.out.println(actualCheckers[5][3].getId());
 
         menu.quitMenu();
 
@@ -128,8 +113,8 @@ public class Game {
                 if(enemyCheckerCounter == 0){
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
                 } else if (enemyCheckerCounter == 1){
-                    actualCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
-//                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
+                    temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
+                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
                 }
             } else if (newXCoordinate > xCoordinate && newYCoordinate < yCoordinate) {
                 for (int i = xCoordinate + 1; i < newXCoordinate; i++) {
@@ -151,8 +136,8 @@ public class Game {
                 if(enemyCheckerCounter == 0){
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
                 } else if (enemyCheckerCounter == 1){
-                    actualCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
-//                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
+                    temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
+                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
                 }
             }else if (newXCoordinate < xCoordinate && newYCoordinate > yCoordinate) {
                 for (int i = xCoordinate - 1; i > newXCoordinate; i--) {
@@ -175,8 +160,8 @@ public class Game {
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
                 } else if (enemyCheckerCounter == 1){
                     checkers[enemyXPosition][yCoordinate].setEliminated(true);
-                    actualCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
-//                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
+                    temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
+                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
                 }
             } else if (newXCoordinate < xCoordinate && newYCoordinate < yCoordinate) {
                 for (int i = xCoordinate - 1; i > newXCoordinate; i--) {
@@ -198,8 +183,8 @@ public class Game {
                 if(enemyCheckerCounter == 0){
                     actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, checkers);
                 } else if (enemyCheckerCounter == 1){
-                    actualCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
-//                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
+                    temporaryCheckers = game.elimination(enemyXPosition, enemyYPosition, cells, checkers);
+                    actualCheckers = game.newPosition(cells, newXCoordinate, newYCoordinate, xCoordinate, yCoordinate, temporaryCheckers);
                 }
             }
         }
@@ -222,13 +207,15 @@ public class Game {
 
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                if (checkers[x][y] != null) {
-                    temporaryId = checkers[x][y].getId();
-                    temporaryColor = checkers[x][y].getColor();
-                    temporaryEliminated = checkers[x][y].isEliminated();
-                    temporaryQueen = checkers[x][y].isQueen();
-                    temporaryChecker = new Checker(temporaryId, temporaryColor, temporaryEliminated, temporaryQueen, x, y);
-                    actualCheckers[x][y] = temporaryChecker;
+                if(checkers[x][y] != checkers[xCoordinate][yCoordinate]){
+                    if (checkers[x][y] != null) {
+                        temporaryId = checkers[x][y].getId();
+                        temporaryColor = checkers[x][y].getColor();
+                       temporaryEliminated = checkers[x][y].isEliminated();
+                       temporaryQueen = checkers[x][y].isQueen();
+                       temporaryChecker = new Checker(temporaryId, temporaryColor, temporaryEliminated, temporaryQueen, x, y);
+                        actualCheckers[x][y] = temporaryChecker;
+                    }
                 }
             }
         }
@@ -238,14 +225,15 @@ public class Game {
     public Checker[][] elimination(int xCoordinate, int yCoordinate, Cell cells[][], Checker[][] checkers) {
         Checker[][] actualCheckers = new Checker[8][8];
         System.out.println(xCoordinate + " " + yCoordinate);
+        cells[xCoordinate][yCoordinate].setEmpty(true);
+        checkers[xCoordinate][yCoordinate].setEliminated(true);
 
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                    cells[xCoordinate][yCoordinate].setEmpty(true);
-                    cells[x][y] = cells[x][y];
+                if (checkers[x][y] != checkers[xCoordinate][yCoordinate]) {
                     if (checkers[x][y] != null) {
-                        checkers[xCoordinate][yCoordinate].setEliminated(true);
                         actualCheckers[x][y] = checkers[x][y];
+                    }
                 }
             }
         }
