@@ -208,23 +208,27 @@ public class Game {
 
     public Checker[][] newPosition(Cell cells[][], int newXCoordinate, int newYCoordinate, int xCoordinate, int yCoordinate, Checker[][] checkers){
         Checker[][] actualCheckers = new Checker[8][8];
+
         int temporaryId = checkers[xCoordinate][yCoordinate].getId();
         String temporaryColor = checkers[xCoordinate][yCoordinate].getColor();
         boolean temporaryEliminated = checkers[xCoordinate][yCoordinate].isEliminated();
         boolean temporaryQueen = checkers[xCoordinate][yCoordinate].isQueen();
         Checker temporaryChecker = new Checker(temporaryId, temporaryColor, temporaryEliminated, temporaryQueen, newXCoordinate, newYCoordinate);
 
-        for (int y = 0; y < yCoordinate; y++) {
-            for (int x = 0; x < xCoordinate; x++) {
-//                if (y != yCoordinate && x != xCoordinate) {
-                cells[newXCoordinate][newYCoordinate].setEmpty(false);
-                cells[xCoordinate][yCoordinate].setEmpty(true);
-                cells[x][y] = cells[x][y];
+        cells[newXCoordinate][newYCoordinate].setEmpty(false);
+        cells[xCoordinate][yCoordinate].setEmpty(true);
+
+        actualCheckers[newXCoordinate][newYCoordinate] = temporaryChecker;
+
+        for(int y = 0; y < 8; y++){
+            for(int x = 0; x < 8; x++){
                 if (checkers[x][y] != null) {
-                    actualCheckers[newXCoordinate][newYCoordinate] = temporaryChecker;
-                    if(checkers[xCoordinate][yCoordinate].isEliminated() == false) {
-                        actualCheckers[x][y] = checkers[x][y];
-                    }
+                    temporaryId = checkers[x][y].getId();
+                    temporaryColor = checkers[x][y].getColor();
+                    temporaryEliminated = checkers[x][y].isEliminated();
+                    temporaryQueen = checkers[x][y].isQueen();
+                    temporaryChecker = new Checker(temporaryId, temporaryColor, temporaryEliminated, temporaryQueen, x, y);
+                    actualCheckers[x][y] = temporaryChecker;
                 }
             }
         }
